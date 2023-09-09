@@ -6,16 +6,18 @@ def input_error(func):
         except KeyError:
             return "Use valid task!"
         except ValueError:
-            return "Write correct task"
+            return "Write phone number"
         except IndexError:
             return "Give me name and phone please"
         return res
     return Inner        
 
 def add_func(add_task):
+    int(add_task[2])
     dict_contacts[add_task[1]] = add_task[2]
 
 def change_func(change_task):
+    int(change_task[2])
     if change_task[1] in dict_contacts.keys():
         dict_contacts[change_task[1]] = change_task[2]
     else:
