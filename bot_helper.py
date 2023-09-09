@@ -1,4 +1,17 @@
 
+def input_error(func):
+    def Inner(task):
+        try:
+            res = func(task)
+        except KeyError:
+            return "Use valid task!"
+        except ValueError:
+            return "Write correct task"
+        except IndexError:
+            return "Give me name and phone please"
+        return res
+    return Inner        
+
 def add_func(add_task):
     dict_contacts[add_task[1]] = add_task[2]
 
@@ -18,12 +31,13 @@ def get_func(task):
         
 list_for_exit = ["good bye", "close", "exit"]
 dict_contacts = {}
-        
+
+@input_error        
 def task_handler(task):
     task = task.lower()
     
     if task in list_for_exit:
-        exit()
+        return "!end this!"
     elif task == "show all":
         return dict_contacts
     elif task == "hello":
@@ -39,6 +53,11 @@ def main():
         task = input(">>>")
         res = task_handler(task)
         
-        print(res) if res else ...
+        if res == "!end this!":
+            print("Good bye!")
+            exit()
+        elif res:
+            print(res)
 
-print(main())
+if __name__ == "__main__":
+    print(main())
