@@ -3,7 +3,7 @@ def input_error(func):
     def Inner(task):
         try:
             res = func(task)
-        except KeyError:
+        except TypeError:
             return "Use valid task!"
         except ValueError:
             return "Write phone number"
@@ -12,10 +12,12 @@ def input_error(func):
         return res
     return Inner        
 
+@input_error 
 def add_func(add_task):
     int(add_task[2])
     dict_contacts[add_task[1]] = add_task[2]
 
+@input_error 
 def change_func(change_task):
     int(change_task[2])
     if change_task[1] in dict_contacts.keys():
@@ -23,13 +25,26 @@ def change_func(change_task):
     else:
         return "Use valid contact!"    
         
+@input_error 
 def phone_func(phone_task):
     return dict_contacts[phone_task[1]]
 
-func = {"add": add_func, "change": change_func, "phone": phone_func}
+@input_error 
+def show_func(task):
+    return dict_contacts
 
+@input_error 
+def exit_func(task):
+    return "!end this!"    
+
+func = {add_func: ["add", "+"], change_func: ["change", "edit"], phone_func: ["phone"], 
+        show_func: ["show", "show all"], exit_func: ["exit", "good", "buy", "close"]}
+
+@input_error 
 def get_func(task):
-    return func[task]
+    for k, v in func.items():
+        if task in v:
+            return k
         
 list_for_exit = ["good bye", "close", "exit"]
 dict_contacts = {}
@@ -38,11 +53,7 @@ dict_contacts = {}
 def task_handler(task):
     task = task.lower()
     
-    if task in list_for_exit:
-        return "!end this!"
-    elif task == "show all":
-        return dict_contacts
-    elif task == "hello":
+    if task == "hello":
         return "How can I help You?"
     
     task_list = task.split()
